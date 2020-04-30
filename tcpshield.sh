@@ -5,8 +5,9 @@ output(){
 }
 
 get_ports(){
-    read ports
-    if [ ports = "" ]; then
+    read -a ports
+
+    if [[ $ports = "" ]]; then
       output "You cannot put in an empty list of ports! Try again:"
       get_ports
     fi
@@ -49,7 +50,7 @@ if [ "$lsb_dist" =  "ubuntu" ] || [ "$lsb_dist" =  "debian" ]; then
      
      for ips in `cat v4`;
      do
-        for port in $ports;
+        for port in "${ports[@]}";
         do
           ufw allow from $ips to any proto tcp port $port
         done
@@ -60,9 +61,9 @@ elif [ "$lsb_dist" =  "fedora" ] || [ "$lsb_dist" =  "rhel" ] || [ "$lsb_dist" =
      wget https://tcpshield.com/v4
      for ips in `cat v4`;
      do
-        for port in $ports;
+        for port in "${ports[@]}";
         do
-          firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address='"$ips"' port port="$port" protocol="tcp" accept'
+          firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address='"$ips"' port port='"$port"' protocol="tcp" accept'
         done
      done
      firewall-cmd --reload
