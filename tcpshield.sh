@@ -45,8 +45,8 @@ fi
 if [ "$lsb_dist" =  "ubuntu" ] || [ "$lsb_dist" =  "debian" ]; then
      apt -y install ufw wget
      # Opening Port 22 just in case so that we do not lose the internet connection when the rules are applied.
-     wget ufw allow 22
-     https://tcpshield.com/v4
+     ufw allow 22
+     wget https://tcpshield.com/v4
      
      for ips in `cat v4`;
      do
